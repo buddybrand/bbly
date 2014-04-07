@@ -29,7 +29,7 @@ if (($_POST)) {
 	}
 	if (isset($_POST['pass'])) {
 		$_SESSION['pass'] = $_POST['pass'];
-		bringmehome(99);
+		bringmehome(99, "");
 	}
 	else {
 		$url = "";
@@ -70,7 +70,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 <head>
 	<meta charset="utf-8">
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-	<title>bbly.de v0.4</title>
+	<title>bbly.de v0.5</title>
 </head>
 <body>
 	<style type="text/css" media="screen">
@@ -95,7 +95,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 				<div class="container">
 					<div class="page-header">
 						<h1>bbly.de</h1>
-						<p>buddy-interne Shortlinks inklusive UTM und OG. (v0.4)</p>
+						<p>buddy-interne Shortlinks inklusive UTM und OG. (v0.5)</p>
 					</div>
 				</div>
 			</div>
@@ -106,7 +106,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 				</div>
 			<?php endif ?>
 
-			<?php if (isset($_SESSION['pass']) && $_SESSION['pass'] == "LarsSkaliert"): ?>
+			<?php if (isset($_SESSION['pass']) && $_SESSION['pass'] == $config['bbly']['adminPass']): ?>
 				<form class="form-signin" method="post" action="" enctype="multipart/form-data">
 					<h2 class="form-signin-heading">Neuer Link</h2>
 					<div class="left">
@@ -201,7 +201,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 	<br><br>
 	<div id="footer">
 		<div class="container">
-			<p class="text-muted credit">bbly.de - &copy; <a taget="_blank" href="http://buddybrand.com">buddybrand GmbH</a> - Deployment Version <?php echo $_ENV['DEP_VERSION']; ?></p>
+			<p class="text-muted credit">bbly.de - &copy; <a taget="_blank" href="http://buddybrand.com">buddybrand GmbH</a> </p>
 		</div>
 	</div>
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>

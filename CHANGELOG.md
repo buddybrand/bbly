@@ -1,13 +1,14 @@
 ##0.5 (2014-04-07)
 
 Features:
-
 - Separated config file
+- Set the admin password via config file. 
 
 Bugfixes:
 
 - Removed Google Analytics from the Frontend. Is never really called because of the header redirection. 
 - Changed to a 301 redirect
+- Removed the cloudcontrol deployment version
 
 ##0.4(2014-03-26)
 
