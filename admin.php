@@ -20,6 +20,37 @@ function bringmehome($message, $code) {
 function shorten($text, $length) {
 	return (strlen($text) > $length) ? substr($text, 0,$length) . ".." : $text;
 }
+function resizeImage($filename) {
+	$max_width = 1200;
+	$max_height = 1200;
+    list($orig_width, $orig_height) = getimagesize($filename);
+
+    $width = $orig_width;
+    $height = $orig_height;
+
+    # taller
+    if ($height > $max_height) {
+        $width = ($max_height / $height) * $width;
+        $height = $max_height;
+    }
+
+    # wider
+    if ($width > $max_width) {
+        $height = ($max_width / $width) * $height;
+        $width = $max_width;
+    }
+
+    $image_p = imagecreatetruecolor($width, $height);
+
+    $image = imagecreatefromjpeg($filename);
+
+    imagecopyresampled($image_p, $image, 0, 0, 0, 0, 
+                                     $width, $height, $orig_width, $orig_height);
+
+    // return $image_p;
+	imagejpeg($image_p, "output.jpg");
+}
+
 $message = array("Link updated!", "Link saved!");
 
 /* Logic */
@@ -36,11 +67,14 @@ if (($_POST)) {
 		if ($_FILES && strlen($_FILES['visual']['tmp_name']) > 5) {
 			$uploadFile = $_FILES['visual']['tmp_name'];
 			imagejpeg(imagecreatefromstring(file_get_contents($_FILES['visual']['tmp_name'])), "output.jpg");
+			resizeImage("output.jpg");
 			// Put our file (also with public read access)
 			$filename = uniqid("bbly") . str_replace(".", "-", str_replace(" ", "", $_FILES['visual']['name'])) . ".jpg";
 			if ($s3->putObjectFile("output.jpg", $config['aws']['bucketName'], $filename, S3::ACL_PUBLIC_READ, array("image/jpeg"))) {
 				$url = $config['aws']['pathPrefix'] . $filename;
 			} 
+
+			unlink("output.jpg");
 		}
 		else {
 			if (isset($link)) {
@@ -51,6 +85,8 @@ if (($_POST)) {
 		$arr = array("code" => $_POST['code'], "link" => $_POST['link'], "name" => $_POST['name'], "copy" => $_POST['copy'],  "created_at" =>  new MongoDate(), "visual" => $url);
 		if (isset($link)) {
 			$arr['updated_at'] = new MongoDate();
+			$arr['created_at'] =  $link['created_at'];
+			$arr['count'] = $link['count'];
 			$col->update(array("code" => $_POST['code']), $arr);
 			$message = 0;
 		}
@@ -58,19 +94,17 @@ if (($_POST)) {
 			$col->insert($arr);
 			$message = 1;
 		}
-		unlink("output.jpg");
 		bringmehome($message, $_POST['code']);
 	}
 }
 $cursor = $col->find(array(), array());
 $cursor = $cursor->sort(array("created_at" => -1));
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-	<title>bbly.de v0.5</title>
+	<title>bbly.de v0.6</title>
 </head>
 <body>
 	<style type="text/css" media="screen">
@@ -95,11 +129,11 @@ $cursor = $cursor->sort(array("created_at" => -1));
 				<div class="container">
 					<div class="page-header">
 						<h1>bbly.de</h1>
-						<p>buddy-interne Shortlinks inklusive UTM und OG. (v0.5)</p>
+						<p>Shortlinks inklusive Open Graph, Twitter Cards, Google+ Share Preview und UTM. (v0.6)</p>
 					</div>
 				</div>
 			</div>
-			<?php if (isset($_GET['message']) && $_GET['message'] != 99): ?>
+			<?php if (isset($_GET['message']) && $_GET['message'] != 99 && isset($_SESSION['pass']) && $_SESSION['pass'] == $config['bbly']['adminPass']): ?>
 				<div class="alert alert-success">
 					<a class="close" data-dismiss="alert">×</a>
 					<strong>Juhu!</strong> <?php echo $message[$_GET['message']]; ?> <a href="http://bbly.de/<?php echo $_GET['code'] ?>">http://bbly.de/<?php echo $_GET['code'] ?></a>
@@ -120,7 +154,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 						<textarea class="form-control" name="copy" rows="4" id="copy" placeholder="Copy" onchange="copycount();" onkeyup="copycount();" onkeydown="copycount();"></textarea>
 					</div>
 					<div class="right">
-						<label>Visual (200x200 minimum, 1500x1500 preferred, Optional)</label>
+						<label>Visual (200x200 minimum, 1200x1200 preferred, Optional)</label>
 						<input type="file" class="form-control" placeholder="visual" id="visual" autofocus="" name="visual">
 						<br>
 						<label>*Abkürzungscode (http://bbly.de/Abkürzungscode)</label>

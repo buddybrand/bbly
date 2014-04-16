@@ -1,3 +1,13 @@
+##0.6 (2014-04-16)
+
+Features:
+- Automated Picture resizing 
+- 
+
+Bugfixes:
+- Klick Count is saved even when Link are updated. 
+- Status message not shown anymore, when the user is logged out in the meantime. 
+
 ##0.5 (2014-04-07)
 
 Features:
@@ -25,6 +35,7 @@ Bugfixes:
 ##0.3(2014-03-17)
 
 Features:
+
 - Implementierung von Twitter Cards.
 
 ##0.2(2014-03-14)
