@@ -103,7 +103,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 <head>
 	<meta charset="utf-8">
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-	<title>bbly.de v0.6</title>
+	<title>bbly v0.6</title>
 </head>
 <body>
 	<style type="text/css" media="screen">
@@ -127,7 +127,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 			<div class="jumbotron">
 				<div class="container">
 					<div class="page-header">
-						<h1>bbly.de</h1>
+						<h1>bbly</h1>
 						<p>Shortlinks inklusive Open Graph, Twitter Cards, Google+ Share Preview und UTM. (v0.6)</p>
 					</div>
 				</div>
@@ -135,7 +135,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 			<?php if (isset($_GET['message']) && $_GET['message'] != 99 && isset($_SESSION['pass']) && $_SESSION['pass'] == $config['bbly']['adminPass']): ?>
 				<div class="alert alert-success">
 					<a class="close" data-dismiss="alert">×</a>
-					<strong>Juhu!</strong> <?php echo $message[$_GET['message']]; ?> <a href="http://bbly.de/<?php echo $_GET['code'] ?>">http://bbly.de/<?php echo $_GET['code'] ?></a>
+					<strong>Juhu!</strong> <?php echo $message[$_GET['message']]; ?> <a href="<?php echo $config['bbly']['domain']; ?>/<?php echo $_GET['code'] ?>"><?php echo $config['bbly']['domain'] ?>/<?php echo $_GET['code'] ?></a>
 				</div>
 			<?php endif ?>
 
@@ -156,7 +156,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 						<label>Visual (200x200 minimum, 1200x1200 preferred, Optional)</label>
 						<input type="file" class="form-control" placeholder="visual" id="visual" autofocus="" name="visual">
 						<br>
-						<label>*Abkürzungscode (http://bbly.de/Abkürzungscode)</label>
+						<label>*Abkürzungscode (<?php echo $config['bbly']['domain'] ?>/Abkürzungscode)</label>
 						<input type="text" class="form-control" placeholder="Code" autofocus="" id="code" name="code" value="<?php echo substr(uniqid(), -5); ?>">
 						<br>
 						<label>Alles nochmals gecheckt?</label>
@@ -187,7 +187,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 							<td title="<?php echo $doc['name'] ?>"><?php echo $doc['name'] ?></td>
 							<td title="<?php echo $doc['copy'] ?>"><?php echo shorten($doc['copy'], 250) ?></td>
 							<td><img src="<?php echo $doc['visual'] ?>" style="width:100px;"/></td>
-							<td><a href="http://bbly.de/<?php echo $doc['code'] ?>" title="<?php echo $doc['code'] ?>">http://bbly.de/<?php echo shorten($doc['code'], 10) ?></a></td>
+							<td><a href="<?php echo $config['bbly']['domain'] ?>/<?php echo $doc['code'] ?>" title="<?php echo $doc['code'] ?>">http://bbly.de/<?php echo shorten($doc['code'], 10) ?></a></td>
 							<td><?php echo (isset($doc['count'])) ? $doc['count'] :0 ?></td>
 						</tr>
 					<?php endforeach ?>
@@ -234,7 +234,7 @@ $cursor = $cursor->sort(array("created_at" => -1));
 	<br><br>
 	<div id="footer">
 		<div class="container">
-			<p class="text-muted credit">bbly.de - &copy; <a taget="_blank" href="http://buddybrand.com">buddybrand GmbH</a> </p>
+			<p class="text-muted credit">bbly - &copy; <a taget="_blank" href="http://buddybrand.com">buddybrand GmbH</a> </p>
 		</div>
 	</div>
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>

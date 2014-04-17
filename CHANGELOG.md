@@ -1,16 +1,20 @@
+
 ##0.6 (2014-04-16)
 
 Features:
+
 - Automated Picture resizing 
-- 
+- Config variable for main url. 
 
 Bugfixes:
+
 - Klick Count is saved even when Link are updated. 
 - Status message not shown anymore, when the user is logged out in the meantime. 
 
 ##0.5 (2014-04-07)
 
 Features:
+
 - Separated config file
 - Set the admin password via config file. 
 

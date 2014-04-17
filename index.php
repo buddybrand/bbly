@@ -79,8 +79,8 @@ else {
 		<meta itemprop="description" content="<?php echo $link['copy'] ?>">
 		<meta name="description" content="<?php echo $link['copy'] ?>" />
 	<?php endif ?>
-	<meta name="twitter:url" content="http://bbly.de/<?php echo $link['code'] ?>">
-	<meta property="og:url" content="http://bbly.de/<?php echo $link['code'] ?>"/>
+	<meta name="twitter:url" content="<?php echo $config['bbly']['domain']  ?>/<?php echo $link['code'] ?>">
+	<meta property="og:url" content="<?php echo $config['bbly']['domain']  ?>/<?php echo $link['code'] ?>"/>
 
 	<style type="text/css" media="screen">
 	*, body {

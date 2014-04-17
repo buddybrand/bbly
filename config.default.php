@@ -1,6 +1,7 @@
 <?php
 $config = array();
 
+$config['bbly']['domain'] = "http://bbly.de";
 $config['bbly']['fallbackUrl'] = "http://buddybrand.com";
 
 $config['mongo']['uri'] = null;
