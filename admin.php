@@ -44,8 +44,7 @@ function resizeImage($filename) {
 
     $image = imagecreatefromjpeg($filename);
 
-    imagecopyresampled($image_p, $image, 0, 0, 0, 0, 
-                                     $width, $height, $orig_width, $orig_height);
+    imagecopyresampled($image_p, $image, 0, 0, 0, 0,  $width, $height, $orig_width, $orig_height);
 
     // return $image_p;
 	imagejpeg($image_p, "output.jpg");
